@@ -576,7 +576,7 @@ const HomePage = () => {
                     <div>
                         <Form form={form} onFinish={handleSubmitTextQuery}>
                             <Form.Item label="Add-Text" name="query" className="userInput">
-                                <Input type="String" placeholder="example: (rupees 30 on Chai on 6th feb 2025)"/>
+                                <Input type="String" placeholder="eg:(rupees 30 on Chai on 6th feb 2025)"/>
                             </Form.Item>
                         </Form>
                     </div>
