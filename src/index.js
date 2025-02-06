@@ -5,6 +5,9 @@ import App from './App';
 import 'antd/dist/reset.css';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter} from "react-router-dom"
+import axios from 'axios';
+
+axios.defaults.baseURL = 'https://finance-management-portal.onrender.com';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
