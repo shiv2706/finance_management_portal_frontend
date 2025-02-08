@@ -635,6 +635,17 @@ footer{
     flex-direction: column;
     justify-content: space-around;
   }
+
+  .userInput {
+    width: 300px;
+    padding-bottom: 0px;
+  }
+  .submitInput{
+    padding-top: 1px;
+    padding-bottom: 10px;
+    align-self: center;
+  }
+
   .questionBoxChatbot{
     height: 35rem !important;
   }
