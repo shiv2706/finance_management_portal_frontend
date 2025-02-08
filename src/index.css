@@ -357,7 +357,7 @@ footer{
 
 .TotalDetailsCardChatBot {
   width: 50%;
-  height: 35rem;
+  height: 30rem;
   align-items: center;
   display: flex;
   flex-direction: column;
@@ -446,7 +446,7 @@ footer{
   justify-content: center;
   align-content: center;
   width: 40%;
-  height: 35rem;
+  height: 30rem;
   gap: 5px;
   padding-top: 10px;
   padding-bottom: 30px;
