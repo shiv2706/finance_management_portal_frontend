@@ -583,3 +583,59 @@ footer{
   background-color: lightgreen;
   align-self: flex-start;
 }
+
+@media (max-width: 1129px) {
+  .filters {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .analytics {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    gap: 2vw;
+    flex-wrap: wrap;
+    background-color: #F2F7FF;
+    padding-top: 10px;
+    padding-bottom: 20px;
+  }
+  .dataCard{
+    width: 100%;
+  }
+  .navbar-nav {
+    flex-direction: row; /* Keeps items in a row instead of column */
+    justify-content: flex-end;
+    gap: 10px; /* Adds spacing between buttons */
+  }
+
+  .navbar .btn {
+    font-size: 14px; /* Adjust button text size */
+    padding: 5px 10px;
+  }
+
+
+  
+}
+@media (max-width: 453px){
+  .dataCard{
+    scale: 0.95;
+  }
+  .navbar .btn {
+    font-size: 10px;
+  }
+
+  .navbar-brand {
+    font-size: 18px !important;
+  }
+
+  .sendchat{
+    flex-direction: column;
+    justify-content: space-around;
+  }
+  .questionBoxChatbot{
+    height: 35rem !important;
+  }
+}
