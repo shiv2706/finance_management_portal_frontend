@@ -412,7 +412,7 @@ const HomePage = () => {
                         <Select.Option value="365">LifeTime</Select.Option>
                     </Select></h6>
                     <div className="totalsAnalytics">
-                        <div className="head">
+                        <div className="headIncome">
                             <h2>TOTAL INCOME</h2>
                             <h5>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
@@ -422,7 +422,7 @@ const HomePage = () => {
                                 </svg>
                                 <CountUp end={total.totalIncome} duration={1.5}/></h5>
                         </div>
-                        <div className="head">
+                        <div className="headExpense">
                             <h2>TOTAL EXPENSE</h2>
                             <h5>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
@@ -434,7 +434,7 @@ const HomePage = () => {
                         </div>
 
                     </div>
-                    <div className="head">
+                    <div className="headBalance">
                         <h2>BALANCE</h2>
                         <h5>
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
@@ -462,6 +462,11 @@ const HomePage = () => {
                                 datasets: [{
                                     label: "total",
                                     data: [total.totalIncome, total.totalExpense],
+                                    backgroundColor: [
+                                        "lightgreen",
+                                        "#FF6384",
+
+                                    ]
                                 }]
                             }}
                             options={{
