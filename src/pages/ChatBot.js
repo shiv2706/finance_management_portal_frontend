@@ -91,7 +91,7 @@ const ChatBot = () => {
                 <button className="btn btn-primary">Go To Dashboard</button>
             </div>
             <div className="analytics">
-                <motion.div className="dataCard questionBox"
+                <motion.div className="dataCard questionBoxChatbot"
                             initial={{x: -50, opacity: 0}}
                             animate={{x: 0, opacity: 1}}
                             transition={{duration: 1, delay: 0.2}}>

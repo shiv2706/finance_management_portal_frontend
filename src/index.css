@@ -357,7 +357,7 @@ footer{
 
 .TotalDetailsCardChatBot {
   width: 50%;
-  height: 25rem;
+  height: 35rem;
   align-items: center;
   display: flex;
   flex-direction: column;
@@ -440,6 +440,19 @@ footer{
   background-color: #F0F9F8;
 }
 
+.questionBoxChatbot  {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  width: 40%;
+  height: 35rem;
+  gap: 5px;
+  padding-top: 10px;
+  padding-bottom: 30px;
+  background-color: #F0F9F8;
+}
+
 .questionBox button.btn-primary {
   padding: 3px;
   width: 300px;
@@ -454,6 +467,23 @@ footer{
 }
 
 .questionBox h2 {
+  padding-top: 15px;
+}
+
+.questionBoxChatbot button.btn-primary {
+  padding: 3px;
+  width: 300px;
+  background-color: #1d3557;
+  border: none;
+}
+
+.questionBoxChatbot button.btn-primary:hover {
+  background-color: #457b9d;
+  transform: scale(1.05);
+  transition: 1s;
+}
+
+.questionBoxChatbot h2 {
   padding-top: 15px;
 }
 
