@@ -367,10 +367,19 @@ const HomePage = () => {
                                     setShowModal(true)
                                 }}>
                             + Add transaction
-                        </button>
+                        </button> {total.totalTransactions === 0 && <motion.div
+                    initial={{ x: -50, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ duration: 1, delay: 0.2 }}
+                    whileHover={{ scale: 1.02, transition: 0.2 }}> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                             className="bi bi-arrow-left" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                  d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+                        </svg> Click here to Add your FIRST transaction !
+                    </motion.div>}
 
                 </div>}
-                {analytics==="yes" && <div>
+                {analytics === "yes" && <div>
                     <button className="btn btn-primary" onClick={AnalyticsHandler}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                              className="bi bi-card-checklist" viewBox="0 0 16 16">
