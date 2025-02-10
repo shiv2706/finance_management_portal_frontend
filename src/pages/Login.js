@@ -50,10 +50,10 @@ const Login = () => {
                 <Form layout="vertical" onFinish={submitHandler}>
                     <h1>Welcome Back!</h1>
                     <Form.Item label="Email" name="email">
-                        <Input type="email"/>
+                        <Input type="email" placeholder="for testing : testuser@gmail.com" />
                     </Form.Item>
                     <Form.Item label="Password" name="password">
-                        <Input type="password"/>
+                        <Input type="password" placeholder="for testing : test@123" />
                     </Form.Item>
                     <div className="d-flex justify-content-between">
                         <h7>new User? <Link to="/register">Register Now</Link></h7>
