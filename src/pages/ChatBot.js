@@ -69,8 +69,8 @@ const ChatBot = () => {
         const query = "on what category did i spend the most?"
         await GetResponse(query);
     }
-    const BudgetingPlanHandler = async () => {
-        const query = "Make a budgeting plan for me"
+    const FoodHowMuchHandler = async () => {
+        const query = "How much did i spend on food?"
         await GetResponse(query);
     }
 
@@ -102,7 +102,7 @@ const ChatBot = () => {
                     <button className="btn btn-primary" onClick={CategoryMostHandler}>On what Category did i spend the
                         most?
                     </button>
-                    <button className="btn btn-primary" onClick={BudgetingPlanHandler}>Draft a Budget Plan for me
+                    <button className="btn btn-primary" onClick={FoodHowMuchHandler}>How much did i spend on Food?
                     </button>
                     <p> </p>
                     <h6>Get Answers from the Last {daterange} days <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
