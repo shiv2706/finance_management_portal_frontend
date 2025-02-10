@@ -32,7 +32,10 @@ const HomePage = () => {
     const [chartData, setChartData] = useState({ labels: [], datasets: [] });
     const [categoryChartData, setCategoryChartData] = useState([]);
     const [form] = Form.useForm();
+    const [form1] = Form.useForm()
     const [error, setError] = useState(false);
+    const [editable, setEditable] = useState(null);
+    const [deleteModal, setDeleteModal] = useState(false);
 
 
 
@@ -65,8 +68,32 @@ const HomePage = () => {
             title: 'Type',
             dataIndex: 'Type',
         },
+        {
+          title: 'Actions',
+          render: (text,record) => (
+              <div>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
+                       className="bi bi-pencil-square" viewBox="0 0 16 16" onClick={() => {
+                           setEditable(record)
+                      setShowModal(true);
+                  }}>
+                      <path
+                          d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                      <path fill-rule="evenodd"
+                            d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                  </svg>   -   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                         className="bi bi-trash3-fill" viewBox="0 0 16 16" onClick={()=>{
+                             setEditable(record)
+                  setDeleteModal(true)
+              }}>
+                  <path
+                      d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
+                  </svg>
+              </div>
+)
+},
 
-    ]
+]
 
     const getAllTransactionss = async () => {
         try {
@@ -77,12 +104,13 @@ const HomePage = () => {
                 selectedDate,
                 answer,
                 categoryy,
-                type,})
+                type,
+            })
             // setLoading(false);
             console.log(res.data)
             setAllTransactions(res.data);
 
-        }catch(err) {
+        } catch (err) {
             console.log(err);
             message.error("fetch issue with transaction");
         }
@@ -99,13 +127,15 @@ const HomePage = () => {
             console.log(err);
         }
     }
+
+
     useEffect(() => {
         getTotalDetails();
-    },[showModal,imageModal,daterange])
+    },[showModal,imageModal,daterange,deleteModal])
 
     useEffect(() => {
         getAllTransactionss();
-    },[selectedDate,answer,categoryy,type,imageModal,showModal]);
+    },[selectedDate,answer,categoryy,type,imageModal,showModal,deleteModal]);
 
     const getLineChartData = async () => {
         const user = JSON.parse(localStorage.getItem("user"));
@@ -139,7 +169,7 @@ const HomePage = () => {
 
     useEffect(() => {
         getLineChartData();
-    },[daterange,showModal,imageModal])
+    },[daterange,showModal,imageModal,deleteModal])
 
     const getCategoryDataDoughnut = async () => {
         try{
@@ -155,20 +185,49 @@ const HomePage = () => {
 
     useEffect(() => {
         getCategoryDataDoughnut()
-    },[showModal,imageModal,daterange])
+    },[showModal,imageModal,daterange,deleteModal])
+
+    const HandleDelete = async (record) => {
+        try{
+            setLoading(true)
+            console.log(editable)
+            await axios.post("/transactions/delete-transaction",{transactionId: editable._id})
+            setLoading(false)
+            setDeleteModal(false);
+        }catch(err){
+            setLoading(false)
+            console.log(err);
+        }
+    }
 
     const handleSubmit = async (values) => {
         try{
+            setEditable(null)
             const user = JSON.parse(localStorage.getItem("user"));
             setLoading(true);
-            await axios.post("/transactions/add-transaction", {...values,userid:user._id, })
-            await getAllTransactionss();
-            setLoading(false);
-            setSuccess(true,);
-            setTimeout(() => {
-                setSuccess(false);
-            }, 3000)
-            // setShowModal(false);
+            if(editable){
+                await axios.post("/transactions/edit-transaction",{payload:
+                {...values, userid:user._id}, transactionId: editable._id})
+                await getAllTransactionss();
+                setLoading(false);
+                setSuccess(true,);
+                setTimeout(() => {
+                    setSuccess(false);
+                    setShowModal(false);
+                }, 3000)
+
+            }else{
+                await axios.post("/transactions/add-transaction", {...values,userid:user._id, })
+                await getAllTransactionss();
+                setLoading(false);
+                setSuccess(true,);
+                setTimeout(() => {
+                    setSuccess(false);
+                    setShowModal(false);
+                }, 3000)
+            }
+            form1.resetFields()
+
 
         }catch(err){
             setLoading(false);
@@ -195,6 +254,7 @@ const HomePage = () => {
             setSuccess(true);
             setTimeout(() => {
                 setSuccess(false);
+                setShowModal(false);
             }, 3000)
 
         }catch (err){
@@ -569,12 +629,14 @@ const HomePage = () => {
                     </div>
                 </div>
             </div>}
-            <Modal className="allModal" title="Add Transaction" open={showModal}
+            <Modal className="allModal" title={editable ? "Edit Transaction":"Add Transaction"} open={showModal}
                    onCancel={() => {
+                       setEditable(null)
+                       form1.resetFields()
                        setShowModal(false)
                    }}
                    footer={false}>
-                <div className="d-flex justify-content-around">
+                {editable ===null && <div className="d-flex justify-content-around">
                     <button className="btn btn-primary" onClick={imageHandler}>
                         <h8>Upload Image </h8>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -585,8 +647,8 @@ const HomePage = () => {
                                   d="M7.646 4.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V14.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708z"/>
                         </svg>
                     </button>
-                </div>
-                <div className="sendchat">
+                </div>}
+                {editable === null && <div className="sendchat">
                     <div>
                         <Form form={form} onFinish={handleSubmitTextQuery}>
                             <Form.Item label="Add-Text" name="query" className="userInput">
@@ -597,8 +659,8 @@ const HomePage = () => {
                     <div className="submitInput">
                         <button className="btn btn-primary" onClick={handleSubmitTextQuery}>SEND</button>
                     </div>
-                </div>
-                <Form layout="vertical" onFinish={handleSubmit}>
+                </div>}
+                <Form form={form1} layout="vertical" onFinish={handleSubmit} initialValues={editable}>
                     {loading && <Loading/>}
                     {success && <Success/>}
                     {error && <Failed />}
@@ -629,7 +691,7 @@ const HomePage = () => {
                         <Input type="date"/>
                     </Form.Item>
                     <div className="d-flex justify-content-end">
-                        <button type="submit" className="btn btn-primary">SAVE</button>
+                        <button type="submit" className="btn btn-primary">{editable === null && "SAVE"}{editable != null && "UPDATE"}</button>
                     </div>
                 </Form>
 
@@ -644,6 +706,22 @@ const HomePage = () => {
                 </div>
                 <UploadBillForm/>
 
+
+            </Modal>
+            <Modal className="allModal" title="Alert" open={deleteModal} onCancel={()=>{
+                setDeleteModal(false)}}
+                footer = {false}>
+                <h4>Delete Transaction?</h4>
+                <h8>(the following transaction will be deleted permanently)</h8>
+                <div className="del">
+                    <h8>{JSON.stringify(editable, ["amount", "Type", "category"], "\t").replace(/"/g,'',)}</h8>
+                </div>
+                {loading && <Loading/>}
+                <div className="deletebtn">
+                    <button className="btn btn-primary" onClick={HandleDelete}>
+                        <h8>DELETE</h8>
+                    </button>
+                </div>
 
             </Modal>
             <div>
