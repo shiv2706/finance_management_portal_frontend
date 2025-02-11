@@ -712,13 +712,15 @@ const HomePage = () => {
 
 
             </Modal>
-            <Modal className="allModal" title="Alert" open={deleteModal} onCancel={()=>{
+            <Modal className="allModal" title="Alert !" open={deleteModal} onCancel={()=>{
                 setDeleteModal(false)}}
                 footer = {false}>
                 <h4>Delete Transaction?</h4>
                 <h8>(the following transaction will be deleted permanently)</h8>
                 <div className="del">
-                    <h8>{JSON.stringify(editable, ["amount", "Type", "category"], "\t").replace(/"/g,'',)}</h8>
+                    <h8>{JSON.stringify(editable, ["amount", "Type", "category"], "\t").replace(/"/g,'',).replace(/{/,"[")
+                        .replace(/}/g,"]").replace(/amount/g,"Amount ")
+                        .replace(/category/g,"Category ").replace(/Type/g,"Type ")}</h8>
                 </div>
                 {loading && <Loading/>}
                 <div className="deletebtn">
