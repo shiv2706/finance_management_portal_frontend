@@ -214,7 +214,7 @@ const HomePage = () => {
                 setSuccessAuth(true,);
                 setTimeout(() => {
                     setSuccessAuth(false);
-                    setEditable(null)
+                    setEditable(null);
                     setShowModal(false);
                 }, 3000)
 
