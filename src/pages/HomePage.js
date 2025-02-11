@@ -9,6 +9,7 @@ import axios from "axios";
 import Loading from "../components/Loading";
 import UploadBillForm from "../components/uploadBillForm";
 import Success from "../components/Success";
+import SuccessAuth from "../components/SuccessAuth";
 import Failed from "../components/Failed";
 import Analytics from "../components/Analytics";
 const {RangePicker} = DatePicker;
@@ -21,6 +22,7 @@ const HomePage = () => {
     const [imageModal, setImageModal] = useState(false);
     const [loading,setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
+    const [successAuth, setSuccessAuth] = useState(false);
     const [allTransactions,setAllTransactions] = useState([]);
     const [selectedDate, setSelectedDate] = useState([0,0]);
     const [answer, setAnswer] = useState("0");
@@ -202,7 +204,6 @@ const HomePage = () => {
 
     const handleSubmit = async (values) => {
         try{
-            setEditable(null)
             const user = JSON.parse(localStorage.getItem("user"));
             setLoading(true);
             if(editable){
@@ -210,9 +211,10 @@ const HomePage = () => {
                 {...values, userid:user._id}, transactionId: editable._id})
                 await getAllTransactionss();
                 setLoading(false);
-                setSuccess(true,);
+                setSuccessAuth(true,);
                 setTimeout(() => {
-                    setSuccess(false);
+                    setSuccessAuth(false);
+                    setEditable(null)
                     setShowModal(false);
                 }, 3000)
 
@@ -458,6 +460,7 @@ const HomePage = () => {
                 <Table className="tabular" columns={columns} dataSource={allTransactions} size="small" pagination={{
                     position: ["bottomCenter"],
                     pageSize: 10,
+
                 }}/>
 
             </motion.div>}
@@ -663,6 +666,7 @@ const HomePage = () => {
                 <Form form={form1} layout="vertical" onFinish={handleSubmit} initialValues={editable}>
                     {loading && <Loading/>}
                     {success && <Success/>}
+                    {successAuth && <SuccessAuth/>}
                     {error && <Failed />}
                     <Form.Item label="Amount" name="amount">
                         <Input type="number"/>

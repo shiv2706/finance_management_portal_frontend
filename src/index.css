@@ -287,6 +287,7 @@ footer{
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   background-color: #F2F7FF;
+
 }
 .tabular .ant-table-thead > tr > th {
   background-color: #1d3557; /* Blue header */
