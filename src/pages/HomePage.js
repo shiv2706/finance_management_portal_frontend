@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import {Bar, Line, Doughnut} from "react-chartjs-2";
 import CountUp from "react-countup";
 import {Button, Form, Input, message, Modal, Select, Table, Upload, DatePicker} from 'antd'
+import {Link} from "react-router-dom";
 import Layout from "../components/Layout/Layout";
 import axios from "axios";
 import Loading from "../components/Loading";
@@ -732,7 +733,7 @@ const HomePage = () => {
             </Modal>
             <div>
                 <div className="last text-dark ">
-                    <h6 className="text-center">Shivansh Pradhan ©️</h6>
+                    <h6 className="text-center"><a href="https://www.linkedin.com/in/shivansh-pradhan-31572625a/">Shivansh Pradhan ©️</a></h6>
                 </div>
             </div>
         </Layout>

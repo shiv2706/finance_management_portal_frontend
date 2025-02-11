@@ -14,6 +14,10 @@
   align-items: center;
 }
 
+a {
+  color: inherit; /* Inherits text color from parent */
+  text-decoration: none; /* Removes underline */
+}
 
 
 .content{
@@ -58,6 +62,7 @@ footer{
   font-style: italic;
   font-weight: bolder ;
 }
+
 
 .nav-item:hover{
   transform: scale(1.05);
