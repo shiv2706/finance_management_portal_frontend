@@ -196,6 +196,7 @@ const HomePage = () => {
             console.log(editable)
             await axios.post("/transactions/delete-transaction",{transactionId: editable._id})
             setLoading(false)
+            setEditable(null)
             setDeleteModal(false);
         }catch(err){
             setLoading(false)
