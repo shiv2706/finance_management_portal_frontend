@@ -16,7 +16,8 @@ const ChatBot = () => {
     const [form] = Form.useForm();
     const chatContainerRef = useRef(null);
     const [daterange, setdaterange] = useState("365");
-    // const [total, setTotal] = useState([{ transactions:[],totalIncome: 0, totalExpense: 0, balance: 0, expenseTransactions:0, incomeTransactions:0, totalTransactions:0 }]);
+    const [historyy,setHistoryy] = useState("this is the history of all the previous questions ans answers asked till now if the user asks any follow-up questions use this chat history as context to answer that follow-up question:");
+    const [count, setCount] = useState(0);
 
     const GetResponse = async (query) => {
         try{
@@ -28,7 +29,7 @@ const ChatBot = () => {
                 daterange,})
             const dayWiseDetails = await axios.post("/transactions/get-linechart-data",{userid:user._id,
                 daterange,})
-            const reply = await axios.post("/transactions/get-chatbot-response",{userInput: query, userInfo:userDetails.data, CategoryWiseExpense:categoryWiseDetails.data, DayWiseData:dayWiseDetails.data},{
+            const reply = await axios.post("/transactions/get-chatbot-response",{userInput: query, userInfo:userDetails.data, CategoryWiseExpense:categoryWiseDetails.data, DayWiseData:dayWiseDetails.data, Historyy:historyy},{
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -42,6 +43,9 @@ const ChatBot = () => {
                 { sender: "user", message: query },
                 { sender: "bot", message: finans }
             ]);
+            setCount(count + 1)
+            setHistoryy(historyy + count+ ":" + "Question: "+  query + ". response: "+ finans)
+            console.log(historyy)
         }catch(err){
             console.log(err)
             setLoading(false);
@@ -49,6 +53,7 @@ const ChatBot = () => {
     }
 
     const DashBoardHandler = () =>{
+        // axios.post("/transactions/get-chatbot-response",{end:"yes"})
         navigate("/");
     }
     const handleSubmit = async () => {

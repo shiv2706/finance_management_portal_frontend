@@ -9,6 +9,7 @@ import axios from 'axios';
 
 
 axios.defaults.baseURL = 'https://finance-management-portal.onrender.com/api/v1';
+// axios.defaults.baseURL = 'http://localhost:8080/api/v1';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
