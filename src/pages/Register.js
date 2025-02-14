@@ -37,16 +37,14 @@ const Register = () => {
     },[navigate])
     return (
         <div className="r-page">
-            <motion.div className="authheading"
-                        initial={{x: 0, opacity: 1}}
-                        animate={{x: 0, opacity: 1}}
-                        transition={{duration: 0.5, delay: 0.2}}>
-                <h1>FinSmart</h1>
-            </motion.div>
-            <motion.div className="register-page"
-                        initial={{x: 0, opacity: 0}}
-                        animate={{x: 0, opacity: 1}}
-                        transition={{duration: 1, delay: 0.2}}>
+            {/*<motion.div className="authheading"*/}
+            {/*            initial={{x: 0, opacity: 1}}*/}
+            {/*            animate={{x: 0, opacity: 1}}*/}
+            {/*            transition={{duration: 0.5, delay: 0.2}}>*/}
+            {/*    <h1>FinSmart</h1>*/}
+            {/*</motion.div>*/}
+            <div className="register-page"
+                        >
                 {loading && <Loading/>}
                 {success && <SuccessAuth/>}
                 <Form layout="vertical" onFinish={submitHandler}>
@@ -67,7 +65,7 @@ const Register = () => {
                         <button className="btn btn-primary">Register</button>
                     </div>
                 </Form>
-            </motion.div>
+            </div>
         </div>
     )
 }

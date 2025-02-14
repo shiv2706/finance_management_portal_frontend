@@ -44,16 +44,14 @@ const Login = () => {
     },[navigate])
     return (
         <div className="r-page">
-            <motion.div className="authheading"
-                        initial={{x: 0, opacity: 0}}
-                        animate={{x: 0, opacity: 1}}
-                        transition={{duration: 2, delay: 0.2}}>
-                <h1>FinSmart</h1>
-            </motion.div>
-            <motion.div className="register-page"
-                        initial={{x: 0, opacity: 0}}
-                        animate={{x: 0, opacity: 1}}
-                        transition={{duration: 2, delay: 0.2}}>
+            {/*<motion.div className="authheading"*/}
+            {/*            initial={{x: 0, opacity: 0}}*/}
+            {/*            animate={{x: 0, opacity: 1}}*/}
+            {/*            transition={{duration: 2, delay: 0.2}}>*/}
+            {/*    <h1>FinSmart</h1>*/}
+            {/*</motion.div>*/}
+            <div className="register-page"
+                        >
                 {loading && <Loading/>}
                 {success && <SuccessAuth/>}
                 {error && <FailedAuth/>}
@@ -72,7 +70,7 @@ const Login = () => {
                         <button className="btn btn-primary">Login</button>
                     </div>
                 </Form>
-            </motion.div>
+            </div>
         </div>
     )
 }
