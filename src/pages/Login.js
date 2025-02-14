@@ -1,5 +1,6 @@
 import React,{useState,useEffect} from 'react';
 import {Form, Input, message} from "antd";
+import { motion } from "framer-motion";
 import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
 import Loading from "../components/Loading";
@@ -43,17 +44,26 @@ const Login = () => {
     },[navigate])
     return (
         <div className="r-page">
-            <div className="register-page">
+            <motion.div className="authheading"
+                        initial={{x: 0, opacity: 0}}
+                        animate={{x: 0, opacity: 1}}
+                        transition={{duration: 2, delay: 0.2}}>
+                <h1>FinSmart</h1>
+            </motion.div>
+            <motion.div className="register-page"
+                        initial={{x: 0, opacity: 0}}
+                        animate={{x: 0, opacity: 1}}
+                        transition={{duration: 2, delay: 0.2}}>
                 {loading && <Loading/>}
                 {success && <SuccessAuth/>}
-                {error && <FailedAuth />}
+                {error && <FailedAuth/>}
                 <Form layout="vertical" onFinish={submitHandler}>
                     <h1>Welcome Back!</h1>
                     <Form.Item label="Email" name="email">
-                        <Input type="email" placeholder="for testing : testuser@gmail.com" />
+                        <Input type="email" placeholder="for testing : testuser@gmail.com"/>
                     </Form.Item>
                     <Form.Item label="Password" name="password">
-                        <Input type="password" placeholder="for testing : test@123" />
+                        <Input type="password" placeholder="for testing : test@123"/>
                     </Form.Item>
                     <div className="d-flex justify-content-between">
                         <h7>new User? <Link to="/register">Register Now</Link></h7>
@@ -62,7 +72,7 @@ const Login = () => {
                         <button className="btn btn-primary">Login</button>
                     </div>
                 </Form>
-            </div>
+            </motion.div>
         </div>
     )
 }
