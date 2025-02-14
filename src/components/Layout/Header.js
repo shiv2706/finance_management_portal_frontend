@@ -27,7 +27,7 @@ const Header = () => {
             <nav className="navbar navbar-expand-lg bg-body-tertiary">
                 <div className="container-fluid">
                         <Link className="navbar-brand" to="/">
-                            Finance Portal <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                            FinSmart <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
                                  className="bi bi-cash-coin" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd"
                                       d="M11 15a4 4 0 1 0 0-8 4 4 0 0 0 0 8m5-4a5 5 0 1 1-10 0 5 5 0 0 1 10 0"/>
