@@ -5,13 +5,17 @@ import axios from "axios";
 import Loading from "../components/Loading";
 import Success from "./Success";
 import Failed from "./Failed";
-import {form} from "framer-motion/m";
+import ExtractingText from "./ExtractingText";
+import CategorizingData from "./CategorizingData";
+
 
 const UploadBillForm = () => {
     const navigate = useNavigate();
     const [fileList, setFileList] = useState([]);
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
+    const [extractingText, setExtractingText] = useState(false);
+    const [categorizingData, setCategorizingData] = useState(false);
     const [error, setError] = useState(false);
 
     const onFileChange = ({file, fileList}) => {
@@ -34,19 +38,24 @@ const UploadBillForm = () => {
         try {
             setLoading(true);
             const user = JSON.parse(localStorage.getItem("user"));
-            let transactData = await axios.post("/transactions/upload-bill", formData, {
+            setExtractingText(true);
+            const transactData = await axios.post("/transactions/upload-bill", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
             });
             console.log(transactData);
-            let rawData = transactData.data;
+            setExtractingText(false);
+            setCategorizingData(true)
+            let categorizedData = await axios.post("/transactions/category-extract", {transactData:transactData.data});
+            let rawData = categorizedData.data;
             let validJsonString = rawData.replace(/([a-zA-Z0-9_]+):/g, '"$1":') // Add double quotes around keys
                 .replace(/(\w+):/g, '"$1":') // Ensure all keys are quoted
                 .replace(/'([^']+)'/g, '"$1"');
             let jsonObject = JSON.parse(validJsonString);
             await axios.post("/transactions/add-transaction", {...jsonObject,userid:user._id, })
             setLoading(false);
+            setCategorizingData(false)
             setSuccess(true);
             setTimeout(() => {
                 setSuccess(false);
@@ -68,6 +77,8 @@ const UploadBillForm = () => {
     return (
         <Form layout="vertical" onFinish={onFinish}>
             {/* File Upload */}
+            {extractingText && <ExtractingText/>}
+            {categorizingData && <CategorizingData/>}
             {loading && <Loading/>}
             {success && <Success/>}
             {error && <Failed />}
