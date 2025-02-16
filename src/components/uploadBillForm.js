@@ -66,6 +66,8 @@ const UploadBillForm = () => {
             message.success("Bill uploaded successfully!");
         } catch (error) {
             setLoading(false);
+            setCategorizingData(false)
+            setExtractingText(false);
             setError(true);
             setTimeout(() => {
                 setError(false);
