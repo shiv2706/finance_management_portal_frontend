@@ -81,7 +81,7 @@ const UploadBillForm = () => {
             {/* File Upload */}
             {extractingText && <ExtractingText/>}
             {categorizingData && <CategorizingData/>}
-            {loading && <Loading/>}
+            {/*{loading && <Loading/>}*/}
             {success && <Success/>}
             {error && <Failed />}
             <Form.Item
