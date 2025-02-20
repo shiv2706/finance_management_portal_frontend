@@ -618,6 +618,23 @@ footer{
   align-self: flex-start;
 }
 
+.deletebtn button.btn-primary {
+  background-color: red;
+}
+.deletebtn button.btn-primary:hover {
+  background-color: darkred;
+}
+.deletebtn{
+  padding-top: 20px;
+}
+.del {
+  padding-top: 10px;
+}
+
+.progressBar {
+  padding-bottom: 20px;
+}
+
 @media (max-width: 1129px) {
   .filters {
     flex-direction: column;
@@ -685,15 +702,4 @@ footer{
   }
 }
 
-.deletebtn button.btn-primary {
-  background-color: red;
-}
-.deletebtn button.btn-primary:hover {
-  background-color: darkred;
-}
-.deletebtn{
-  padding-top: 20px;
-}
-.del {
-  padding-top: 10px;
-}
+

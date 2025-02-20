@@ -4,6 +4,7 @@ import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
 import Loading from "../components/Loading";
 import Success from "./Success";
+import UploadProgress from "./UploadProgress";
 import Failed from "./Failed";
 import ExtractingText from "./ExtractingText";
 import CategorizingData from "./CategorizingData";
@@ -17,6 +18,8 @@ const UploadBillForm = () => {
     const [extractingText, setExtractingText] = useState(false);
     const [categorizingData, setCategorizingData] = useState(false);
     const [error, setError] = useState(false);
+    const [progress, setProgress] = useState(0);
+    const [showprogressBar, setShowprogressBar] = useState(false);
 
     const onFileChange = ({file, fileList}) => {
         setFileList(
@@ -36,8 +39,16 @@ const UploadBillForm = () => {
         formData.append("file", fileList[0].originFileObj);
 
         try {
+            setShowprogressBar(true);
             setLoading(true);
+            setProgress(0)
+            setTimeout(() => {
+                setProgress(10)
+            }, 1000)
             const user = JSON.parse(localStorage.getItem("user"));
+            setTimeout(() => {
+                setProgress(25)
+            }, 2000)
             setExtractingText(true);
             const transactData = await axios.post("/transactions/upload-bill", formData, {
                 headers: {
@@ -45,26 +56,36 @@ const UploadBillForm = () => {
                 },
             });
             console.log(transactData);
+            setProgress(50)
             setExtractingText(false);
             setCategorizingData(true)
+            setTimeout(() => {
+                setProgress(70)
+            }, 1000)
             let categorizedData = await axios.post("/transactions/category-extract", {transactData:transactData.data});
             let rawData = categorizedData.data;
             let validJsonString = rawData.replace(/([a-zA-Z0-9_]+):/g, '"$1":') // Add double quotes around keys
                 .replace(/(\w+):/g, '"$1":') // Ensure all keys are quoted
                 .replace(/'([^']+)'/g, '"$1"');
             let jsonObject = JSON.parse(validJsonString);
+            setProgress(90)
             await axios.post("/transactions/add-transaction", {...jsonObject,userid:user._id, })
             setLoading(false);
             setCategorizingData(false)
+            setProgress(100)
             setSuccess(true);
             setTimeout(() => {
                 setSuccess(false);
+                setProgress(0)
+                setShowprogressBar(false);
             }, 3000)
 
             console.log(jsonObject);
 
             message.success("Bill uploaded successfully!");
         } catch (error) {
+            setShowprogressBar(false);
+            setProgress(0)
             setLoading(false);
             setCategorizingData(false)
             setExtractingText(false);
@@ -83,6 +104,7 @@ const UploadBillForm = () => {
             {categorizingData && <CategorizingData/>}
             {/*{loading && <Loading/>}*/}
             {success && <Success/>}
+            {showprogressBar && <UploadProgress value={progress}/>}
             {error && <Failed />}
             <Form.Item
                 name="file"

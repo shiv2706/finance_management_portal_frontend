@@ -4,7 +4,7 @@ const SuccessAuth = () => {
     return (
         <>
             <div className="msg justify-content-center">
-                <div className="success" role="status">
+                <div className="success">
                     <h8>Success !</h8>
                 </div>
             </div>
