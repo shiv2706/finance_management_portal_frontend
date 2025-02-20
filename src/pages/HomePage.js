@@ -108,6 +108,7 @@ const HomePage = () => {
                 answer,
                 categoryy,
                 type,
+                daterange,
             })
             // setLoading(false);
             console.log(res.data)
@@ -138,7 +139,7 @@ const HomePage = () => {
 
     useEffect(() => {
         getAllTransactionss();
-    },[selectedDate,answer,categoryy,type,imageModal,showModal,deleteModal]);
+    },[selectedDate,answer,categoryy,type,imageModal,showModal,deleteModal,daterange]);
 
     const getLineChartData = async () => {
         const user = JSON.parse(localStorage.getItem("user"));
@@ -328,7 +329,7 @@ const HomePage = () => {
                     </svg></h6>
                     <h6><Select value={answer} onChange={(valuess) => RangeCheckHandeler(valuess)}>
                         <Select.Option value="0">Show All</Select.Option>
-                        <Select.Option value="1">Select Date</Select.Option>
+                        {/*<Select.Option value="1">Select Date</Select.Option>*/}
                         <Select.Option value="2">Category</Select.Option>
                         <Select.Option value="3">Type</Select.Option>
                     </Select></h6> {answer === "1" &&
