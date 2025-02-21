@@ -635,6 +635,12 @@ footer{
   padding-bottom: 20px;
 }
 
+.percentage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 @media (max-width: 1129px) {
   .filters {
     flex-direction: column;

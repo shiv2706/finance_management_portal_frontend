@@ -49,6 +49,9 @@ const UploadBillForm = () => {
             setTimeout(() => {
                 setProgress(25)
             }, 2000)
+            setTimeout(() => {
+                setProgress(35)
+            }, 4000)
             setExtractingText(true);
             const transactData = await axios.post("/transactions/upload-bill", formData, {
                 headers: {
