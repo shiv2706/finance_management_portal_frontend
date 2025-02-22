@@ -9,6 +9,7 @@ import Layout from "../components/Layout/Layout";
 import axios from "axios";
 import Loading from "../components/Loading";
 import UploadBillForm from "../components/uploadBillForm";
+import UploadProgress from "../components/UploadProgress";
 import Success from "../components/Success";
 import SuccessAuth from "../components/SuccessAuth";
 import Failed from "../components/Failed";
@@ -39,6 +40,8 @@ const HomePage = () => {
     const [error, setError] = useState(false);
     const [editable, setEditable] = useState(null);
     const [deleteModal, setDeleteModal] = useState(false);
+    const [progress, setProgress] = useState(0);
+    const [showprogressBar, setShowprogressBar] = useState(false);
 
 
 
@@ -193,12 +196,23 @@ const HomePage = () => {
 
     const HandleDelete = async (record) => {
         try{
+            setShowprogressBar(true);
+            setProgress(0)
             setLoading(true)
             console.log(editable)
-            await axios.post("/transactions/delete-transaction",{transactionId: editable._id})
+            await axios.post("/transactions/delete-transaction",{transactionId: editable._id}, {
+                onUploadProgress: (progressEvent) => {
+                    const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                    setProgress(percentCompleted); // Update progress dynamically
+                },
+            })
             setLoading(false)
+            setTimeout(() => {
+                setShowprogressBar(false);
+                setDeleteModal(false);
+            }, 1000)
             setEditable(null)
-            setDeleteModal(false);
+            // setDeleteModal(false);
         }catch(err){
             setLoading(false)
             console.log(err);
@@ -721,11 +735,21 @@ const HomePage = () => {
                 <h4>Delete Transaction?</h4>
                 <h8>(the following transaction will be deleted permanently)</h8>
                 <div className="del">
-                    <h8>{JSON.stringify(editable, ["amount", "Type", "category"], "\t").replace(/"/g,'',).replace(/{/,"[")
+                    {editable && <h8>{JSON.stringify(editable, ["amount", "Type", "category"], "\t").replace(/"/g,'',).replace(/{/,"[")
                         .replace(/}/g,"]").replace(/amount/g,"Amount ")
-                        .replace(/category/g,"Category ").replace(/Type/g,"Type ")}</h8>
+                        .replace(/category/g,"Category ").replace(/Type/g,"Type ")}</h8>}
+                    {editable===null && <motion.h4 initial={{ x: 50, opacity: 0 }}
+                                                   animate={{ x: 0, opacity: 1 }}
+                                                   transition={{ duration: 0.5, delay: 0.2 }}>DELETED !</motion.h4>}
                 </div>
-                {loading && <Loading/>}
+                <div>
+                    <h1>
+
+                    </h1>
+                </div>
+                {/*{loading && <Loading/>}*/}
+
+                {showprogressBar && <UploadProgress value={progress}/>}
                 <div className="deletebtn">
                     <button className="btn btn-primary" onClick={HandleDelete}>
                         <h8>DELETE</h8>
