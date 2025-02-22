@@ -21,6 +21,27 @@ const UploadBillForm = () => {
     const [progress, setProgress] = useState(0);
     const [showprogressBar, setShowprogressBar] = useState(false);
 
+    const captureImage = async () => {
+        try {
+            const input = document.createElement("input");
+            input.type = "file";
+            input.accept = "image/*";
+            input.capture = "environment"; // Opens the camera in back mode on mobile
+
+            input.onchange = (event) => {
+                const file = event.target.files[0];
+                if (file) {
+                    setFileList([{ uid: Date.now(), name: file.name, originFileObj: file }]);
+                }
+            };
+
+            input.click(); // Trigger camera
+        } catch (error) {
+            console.error("Error capturing image:", error);
+            message.error("Failed to capture image.");
+        }
+    };
+
     const onFileChange = ({file, fileList}) => {
         setFileList(
             fileList.map((file) => ({
@@ -101,7 +122,7 @@ const UploadBillForm = () => {
         }
     };
     return (
-        <Form layout="vertical" onFinish={onFinish}>
+        <Form className="imgForm" layout="vertical" onFinish={onFinish}>
             {/* File Upload */}
             {extractingText && <ExtractingText/>}
             {categorizingData && <CategorizingData/>}
@@ -109,6 +130,15 @@ const UploadBillForm = () => {
             {success && <Success/>}
             {showprogressBar && <UploadProgress value={progress}/>}
             {error && <Failed />}
+            <Button onClick={captureImage} style={{marginBottom:10}}>
+                Capture Image <svg xmlns="http://www.w3.org/2000/svg" width="15" height="16" fill="currentColor"
+                                   className="bi bi-camera" viewBox="0 0 16 16">
+                <path
+                    d="M15 12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h1.172a3 3 0 0 0 2.12-.879l.83-.828A1 1 0 0 1 6.827 3h2.344a1 1 0 0 1 .707.293l.828.828A3 3 0 0 0 12.828 5H14a1 1 0 0 1 1 1zM2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4z"/>
+                <path
+                    d="M8 11a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5m0 1a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7M3 6.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0"/>
+            </svg>
+            </Button>
             <Form.Item
                 name="file"
                 rules={[{required: true, message: "Please upload a file."}]}
@@ -120,7 +150,7 @@ const UploadBillForm = () => {
                     accept="image/*">
                     <Button>
                         <h8>Upload Image</h8>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        <svg xmlns="http://www.w3.org/2000/svg" width="19" height="16" fill="currentColor"
                              className="bi bi-cloud-upload" viewBox="0 0 16 16">
                             <path fill-rule="evenodd"
                                   d="M4.406 1.342A5.53 5.53 0 0 1 8 0c2.69 0 4.923 2 5.166 4.579C14.758 4.804 16 6.137 16 7.773 16 9.569 14.502 11 12.687 11H10a.5.5 0 0 1 0-1h2.688C13.979 10 15 8.988 15 7.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 2.825 10.328 1 8 1a4.53 4.53 0 0 0-2.941 1.1c-.757.652-1.153 1.438-1.153 2.055v.448l-.445.049C2.064 4.805 1 5.952 1 7.318 1 8.785 2.23 10 3.781 10H6a.5.5 0 0 1 0 1H3.781C1.708 11 0 9.366 0 7.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383"/>
@@ -130,6 +160,8 @@ const UploadBillForm = () => {
                     </Button>
                 </Upload>
             </Form.Item>
+
+
             <div className="d-flex justify-content-end">
                 <button type="submit" className="btn btn-primary">SAVE</button>
             </div>
