@@ -340,11 +340,11 @@ footer{
   /*height: 100vh;*/
   width: 100%;
   display: flex;
-  flex-direction: row;
+  flex-direction: unset;
   align-items: center;
   justify-content: center;
   align-content: center;
-  gap: 2vw;
+  gap: 1vw;
   flex-wrap: wrap;
   background-color: #F2F7FF;
   padding-top: 10px;
@@ -366,8 +366,8 @@ footer{
 
 
 .LineChartCard {
-  width: 92%;
-  height: 20rem;
+  width: 61.25%;
+  height: 18rem;
   background-color: #F0F9F8;
 
 
@@ -380,8 +380,8 @@ footer{
 }
 
 .TotalDetailsCard {
-  width: 50%;
-  height: 25rem;
+  width: 30%;
+  height: 18rem;
   align-items: center;
   display: flex;
   flex-direction: column;
@@ -472,12 +472,13 @@ footer{
 }
 
 .ComparisonCard {
+  /*position: relative;*/
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-content: center;
-  width: 40%;
-  height: 25rem;
+  width: 35%;
+  height: 18rem;
   padding-top: 30px;
   padding-bottom: 30px;
   background-color: #F0F9F8;

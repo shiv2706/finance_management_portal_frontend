@@ -1,6 +1,7 @@
 import React,{useState, useEffect} from 'react';
 import {Chart as ChartJS} from "chart.js/auto";
 import { motion } from "framer-motion";
+import { Chart, ArcElement, Tooltip, Legend } from 'chart.js';
 import {Bar, Line, Doughnut} from "react-chartjs-2";
 import CountUp from "react-countup";
 import {Button, Form, Input, message, Modal, Select, Table, Upload, DatePicker} from 'antd'
@@ -16,7 +17,7 @@ import Failed from "../components/Failed";
 import Analytics from "../components/Analytics";
 const {RangePicker} = DatePicker;
 
-
+Chart.register(ArcElement, Tooltip, Legend);
 
 
 const HomePage = () => {
@@ -471,7 +472,7 @@ const HomePage = () => {
                 </div>}
             </div>
             {analytics === "no" && <motion.div className="content"
-                                               initial={{ scale: 0.95, opacity: 0 }}
+                                               initial={{ scale: 1, opacity: 0 }}
                                                animate={{ scale: 1, opacity: 1 }}
                                                transition={{ duration: 1 }}>
                 <Table className="tabular" columns={columns} dataSource={allTransactions} size="small" pagination={{
@@ -482,11 +483,7 @@ const HomePage = () => {
 
             </motion.div>}
             {analytics === "yes" && <div className="analytics">
-                <motion.div className="dataCard TotalDetailsCard"
-                     initial={{ x: -50, opacity: 0 }}
-                     animate={{ x: 0, opacity: 1 }}
-                     transition={{ duration: 1, delay: 0.2 }}
-                     whileHover={{ scale: 1.02, transition: 0.2 }}>
+                <div className="dataCard TotalDetailsCard">
 
                     <h6>Last {daterange} days <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                    fill="currentColor"
@@ -502,7 +499,7 @@ const HomePage = () => {
                     </Select></h6>
                     <div className="totalsAnalytics">
                         <div className="headIncome">
-                            <h2>TOTAL INCOME</h2>
+                            <h8>TOTAL INCOME</h8>
                             <h5>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                                      className="bi bi-currency-rupee" viewBox="0 0 16 16">
@@ -512,7 +509,7 @@ const HomePage = () => {
                                 <CountUp end={total.totalIncome} duration={1.5}/></h5>
                         </div>
                         <div className="headExpense">
-                            <h2>TOTAL EXPENSE</h2>
+                            <h8>TOTAL EXPENSE</h8>
                             <h5>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                                      className="bi bi-currency-rupee" viewBox="0 0 16 16">
@@ -524,7 +521,7 @@ const HomePage = () => {
 
                     </div>
                     <div className="headBalance">
-                        <h2>BALANCE</h2>
+                        <h8>BALANCE</h8>
                         <h5>
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                                  className="bi bi-currency-rupee" viewBox="0 0 16 16">
@@ -534,95 +531,19 @@ const HomePage = () => {
                             <CountUp end={Math.round(total.balance)} duration={1.5}/></h5>
                     </div>
 
-                </motion.div>
-                <motion.div className="dataCard ComparisonCard"
-                     initial={{ opacity: 0, y: 20 }}
-                     animate={{ opacity: 1, y: 0 }}
-                     transition={{ duration: 1, delay: 0.2 }}
-                     whileHover={{ scale: 1.02, transition: 0.2 }}>
+                </div>
+                <div className="dataCard ComparisonCard">
                     <div>
-                        <h4>INCOME Vs EXPENSE</h4>
-                        <h6>LAST {daterange} DAYS</h6>
+                        <h8>CATEGORY WISE EXPENSE</h8>
+                        <h8> LAST {daterange} DAYS</h8>
                     </div>
                     <div>
                         <Doughnut
                             data={{
-                                labels: ["Income", "Expense"],
-                                datasets: [{
-                                    label: "total",
-                                    data: [total.totalIncome, total.totalExpense],
-                                    backgroundColor: [
-                                        "lightgreen",
-                                        "#FF6384",
-
-                                    ]
-                                }]
-                            }}
-                            options={{
-                                responsive: true,
-                                maintainAspectRatio: false,
-                                cutout: "60%",
-
-                            }}
-                        />
-                    </div>
-                </motion.div>
-                <div className="dataCard LineChartCard">
-                    <div className="cardh4">
-                        <h4>DAY WISE INCOME & EXPENSE</h4>
-                        <h6>LAST {daterange} DAYS</h6>
-                    </div>
-                    <div className="linechart">
-                        <Line
-                            data={chartData}
-                            options={{
-                                responsive: true,
-                                maintainAspectRatio: false,
-                            }}
-                        />
-                    </div>
-                </div>
-                <div className="dataCard TotalDetailsCard">
-                    <div>
-                        <h4>TOTAL TRANSACTIONS - <CountUp end={total.totalTransactions} duration={1.5}/></h4>
-                    </div>
-                    <div>
-                        <h6>LAST {daterange} DAYS</h6>
-                    </div>
-                    <div className="barChart">
-                        <Bar
-                            data={{
-                                labels: ["Income", "Expense"],
-                                datasets: [{
-                                    label: "total",
-                                    data: [total.incomeTransactions, total.expenseTransactions],
-                                    backgroundColor:[
-                                        "lightgreen",
-                                        "#ff9999"
-                                    ]
-                                }]
-                            }}
-                            options={{
-                                responsive: true,
-                                maintainAspectRatio: false,
-                                cutout: "60%",
-
-                            }}
-                        />
-                    </div>
-                </div>
-                <div className="dataCard ComparisonCard">
-                    <div>
-                        <h4>CATEGORY WISE EXPENSE</h4>
-                        <h6>LAST {daterange} DAYS</h6>
-                    </div>
-                    <div>
-                    <Doughnut
-                            data={{
                                 labels: categoryChartData.map((data) => data._id),
                                 datasets: [{
                                     label: "total",
-                                    data:categoryChartData.map((data) => data.totalAmount) ,
+                                    data: categoryChartData.map((data) => data.totalAmount),
                                     backgroundColor: [
                                         "#FF6384", // Soft Red
                                         "#36A2EB", // Sky Blue
@@ -642,23 +563,101 @@ const HomePage = () => {
                             options={{
                                 responsive: true,
                                 maintainAspectRatio: false,
-                                cutout: "60%",
+                                cutout: "65%",
 
                             }}
                         />
                     </div>
                 </div>
+                <div className="dataCard TotalDetailsCard">
+                    <div>
+                        <h4>TOTAL TRANSACTIONS - <CountUp end={total.totalTransactions} duration={1.5}/></h4>
+                    </div>
+                    <div>
+                        <h6>LAST {daterange} DAYS</h6>
+                    </div>
+                    <div className="barChart">
+                        <Bar
+                            data={{
+                                labels: ["Income", "Expense"],
+                                datasets: [{
+                                    label: "total",
+                                    data: [total.incomeTransactions, total.expenseTransactions],
+                                    backgroundColor: [
+                                        "lightgreen",
+                                        "#ff9999"
+                                    ]
+                                }]
+                            }}
+                            options={{
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                // cutout: "30%",
+                                barPercentage: 0.3,
+                                // categoryPercentage: 0.6,
+
+                            }}
+                        />
+                    </div>
+                </div>
+                <div className="dataCard ComparisonCard"
+                            initial={{opacity: 0, y: 20}}
+                            animate={{opacity: 1, y: 0}}
+                            transition={{duration: 1, delay: 0.2}}>
+                    <div>
+                        <h8>INCOME Vs EXPENSE </h8>
+                        <h8>LAST {daterange} DAYS</h8>
+                    </div>
+                    <div>
+                        <Doughnut
+                            data={{
+                                labels: ["Income", "Expense"],
+                                datasets: [{
+                                    label: "total",
+                                    data: [total.totalIncome, total.totalExpense],
+                                    backgroundColor: [
+                                        "lightgreen",
+                                        "#FF6384",
+
+                                    ]
+                                }]
+                            }}
+                            options={{
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                cutout: "65%",
+
+
+                            }}
+                        />
+                    </div>
+                </div>
+                <div className="dataCard LineChartCard">
+                    <div className="cardh4">
+                        <h6>DAY WISE INCOME & EXPENSE</h6>
+                        <h8>LAST {daterange} DAYS</h8>
+                    </div>
+                    <div className="linechart">
+                        <Line
+                            data={chartData}
+                            options={{
+                                responsive: true,
+                                maintainAspectRatio: false,
+                            }}
+                        />
+                    </div>
+                </div>
             </div>}
-            <Modal className="allModal" title={editable ? "Edit Transaction":"Add Transaction"} open={showModal}
+            <Modal className="allModal" title={editable ? "Edit Transaction" : "Add Transaction"} open={showModal}
                    onCancel={() => {
                        setEditable(null)
                        form1.resetFields()
                        setShowModal(false)
                    }}
                    footer={false}>
-                {editable ===null && <div className="d-flex justify-content-around">
+                {editable === null && <div className="d-flex justify-content-around">
                     <button className="btn btn-primary" onClick={imageHandler}>
-                        <h8>Upload Image </h8>
+                        <h8>Upload Image</h8>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                              className="bi bi-cloud-upload" viewBox="0 0 16 16">
                             <path fill-rule="evenodd"
