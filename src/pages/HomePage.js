@@ -3,6 +3,12 @@ import {Chart as ChartJS} from "chart.js/auto";
 import { motion } from "framer-motion";
 import { Chart, ArcElement, Tooltip, Legend } from 'chart.js';
 import {Bar, Line, Doughnut} from "react-chartjs-2";
+import {
+    GaugeContainer,
+    GaugeValueArc,
+    GaugeReferenceArc,
+    useGaugeState,
+} from '@mui/x-charts/Gauge';
 import CountUp from "react-countup";
 import {Button, Form, Input, message, Modal, Select, Table, Upload, DatePicker} from 'antd'
 import {Link} from "react-router-dom";
@@ -122,6 +128,30 @@ const HomePage = () => {
             console.log(err);
             message.error("fetch issue with transaction");
         }
+    }
+
+    function GaugePointer() {
+        const { valueAngle, outerRadius, cx, cy } = useGaugeState();
+
+        if (valueAngle === null) {
+            // No value to display
+            return null;
+        }
+
+        const target = {
+            x: cx + outerRadius * Math.sin(valueAngle),
+            y: cy - outerRadius * Math.cos(valueAngle),
+        };
+        return (
+            <g>
+                <circle cx={cx} cy={cy} r={5} fill="red" />
+                <path
+                    d={`M ${cx} ${cy} L ${target.x} ${target.y}`}
+                    stroke="red"
+                    strokeWidth={3}
+                />
+            </g>
+        );
     }
 
     const getTotalDetails = async () => {
@@ -482,7 +512,10 @@ const HomePage = () => {
                 }}/>
 
             </motion.div>}
-            {analytics === "yes" && <div className="analytics">
+            {analytics === "yes" && <motion.div className="analytics"
+                                                initial={{x: 0, opacity: 0}}
+                                                animate={{x: 0, opacity: 1}}
+                                                transition={{duration: 0.5, delay: 0.2}}>
                 <div className="dataCard TotalDetailsCard">
 
                     <h6>Last {daterange} days <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -520,16 +553,61 @@ const HomePage = () => {
                         </div>
 
                     </div>
-                    <div className="headBalance">
-                        <h8>BALANCE</h8>
-                        <h5>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                                 className="bi bi-currency-rupee" viewBox="0 0 16 16">
-                                <path
-                                    d="M4 3.06h2.726c1.22 0 2.12.575 2.325 1.724H4v1.051h5.051C8.855 7.001 8 7.558 6.788 7.558H4v1.317L8.437 14h2.11L6.095 8.884h.855c2.316-.018 3.465-1.476 3.688-3.049H12V4.784h-1.345c-.08-.778-.357-1.335-.793-1.732H12V2H4z"/>
-                            </svg>
-                            <CountUp end={Math.round(total.balance)} duration={1.5}/></h5>
-                    </div>
+                    {/*<div className="headBalance">*/}
+                    {/*    <h8>BALANCE</h8>*/}
+                    {/*    <h5>*/}
+                    {/*        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"*/}
+                    {/*             className="bi bi-currency-rupee" viewBox="0 0 16 16">*/}
+                    {/*            <path*/}
+                    {/*                d="M4 3.06h2.726c1.22 0 2.12.575 2.325 1.724H4v1.051h5.051C8.855 7.001 8 7.558 6.788 7.558H4v1.317L8.437 14h2.11L6.095 8.884h.855c2.316-.018 3.465-1.476 3.688-3.049H12V4.784h-1.345c-.08-.778-.357-1.335-.793-1.732H12V2H4z"/>*/}
+                    {/*        </svg>*/}
+                    {/*        <CountUp end={Math.round(total.balance)} duration={1.5}/></h5>*/}
+                    {/*</div>*/}
+                    {total.totalExpense!==0 && total.totalIncome!==0 && total.totalExpense<=total.totalIncome &&
+                        <GaugeContainer
+                        width={200}
+                        height={200}
+                        startAngle={-100}
+                        endAngle={100}
+                        value= {total.totalExpense * 100/total.totalIncome}>
+                        <GaugeReferenceArc />
+                        <GaugeValueArc />
+                        <GaugePointer />
+                    </GaugeContainer>}
+                    {total.totalExpense===0 && <GaugeContainer
+                        width={200}
+                        height={200}
+                        startAngle={-100}
+                        endAngle={100}
+                        value= {1}
+                    >
+                        <GaugeReferenceArc />
+                        <GaugeValueArc />
+                        <GaugePointer />
+                    </GaugeContainer>}
+                    {total.totalIncome===0 && total.totalExpense!==0 && <GaugeContainer
+                        width={200}
+                        height={200}
+                        startAngle={-100}
+                        endAngle={100}
+                        value= {100}
+                    >
+                        <GaugeReferenceArc />
+                        <GaugeValueArc />
+                        <GaugePointer />
+                    </GaugeContainer>}
+                    {total.totalExpense>total.totalIncome && total.totalExpense!==0 && total.totalIncome!==0 && <GaugeContainer
+                        width={200}
+                        height={200}
+                        startAngle={-100}
+                        endAngle={100}
+                        value= {100}
+                    >
+                        <GaugeReferenceArc />
+                        <GaugeValueArc />
+                        <GaugePointer />
+                    </GaugeContainer>}
+                    {total.totalIncome!==0 && <div>{Math.round(total.totalExpense*100/total.totalIncome)}% income spent</div>}
 
                 </div>
                 <div className="dataCard ComparisonCard">
@@ -647,7 +725,7 @@ const HomePage = () => {
                         />
                     </div>
                 </div>
-            </div>}
+            </motion.div>}
             <Modal className="allModal" title={editable ? "Edit Transaction" : "Add Transaction"} open={showModal}
                    onCancel={() => {
                        setEditable(null)
@@ -657,8 +735,7 @@ const HomePage = () => {
                    footer={false}>
                 {editable === null && <div className="d-flex justify-content-around">
                     <button className="btn btn-primary" onClick={imageHandler}>
-                        <h8>Upload Image</h8>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        <h8>Upload Image</h8> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                              className="bi bi-cloud-upload" viewBox="0 0 16 16">
                             <path fill-rule="evenodd"
                                   d="M4.406 1.342A5.53 5.53 0 0 1 8 0c2.69 0 4.923 2 5.166 4.579C14.758 4.804 16 6.137 16 7.773 16 9.569 14.502 11 12.687 11H10a.5.5 0 0 1 0-1h2.688C13.979 10 15 8.988 15 7.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 2.825 10.328 1 8 1a4.53 4.53 0 0 0-2.941 1.1c-.757.652-1.153 1.438-1.153 2.055v.448l-.445.049C2.064 4.805 1 5.952 1 7.318 1 8.785 2.23 10 3.781 10H6a.5.5 0 0 1 0 1H3.781C1.708 11 0 9.366 0 7.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383"/>
