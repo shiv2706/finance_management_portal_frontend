@@ -619,7 +619,7 @@ const HomePage = () => {
                     </GaugeContainer></motion.div>}
                     {total.totalIncome!==0 && <motion.div initial={{x: 0, opacity: 0}}
                                                           animate={{x: 0, opacity: 1}}
-                                                          transition={{duration: 2, delay: 0.2}}>{Math.round(total.totalExpense*100/total.totalIncome)}% income spent</motion.div>}
+                                                          transition={{duration: 1, delay: 0.2}}><CountUp start={0} end={Math.round(total.totalExpense*100/total.totalIncome)} duration={0.1}/>% income spent</motion.div>}
 
                 </div>
                 <div className="dataCard ComparisonCard">
