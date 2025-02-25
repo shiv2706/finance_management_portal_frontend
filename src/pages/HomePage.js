@@ -360,6 +360,7 @@ const HomePage = () => {
 
     }
 
+
     return (
         <Layout>
             {/*{analytics==="yes" && <Analytics /> }*/}
@@ -564,19 +565,24 @@ const HomePage = () => {
                     {/*        <CountUp end={Math.round(total.balance)} duration={1.5}/></h5>*/}
                     {/*</div>*/}
                     {total.totalExpense!==0 && total.totalIncome!==0 && total.totalExpense<=total.totalIncome &&
-                        <GaugeContainer
+                        <motion.div
+                            initial={{x: 0, opacity: 0}}
+                            animate={{x: 0, opacity: 1}}
+                            transition={{duration: 1, delay: 0.2}}><GaugeContainer
                         width={200}
-                        height={200}
+                        height={135}
                         startAngle={-100}
                         endAngle={100}
                         value= {total.totalExpense * 100/total.totalIncome}>
                         <GaugeReferenceArc />
                         <GaugeValueArc />
                         <GaugePointer />
-                    </GaugeContainer>}
-                    {total.totalExpense===0 && <GaugeContainer
+                        </GaugeContainer></motion.div>}
+                    {total.totalExpense===0 && <motion.div initial={{x: 0, opacity: 0}}
+                                                           animate={{x: 0, opacity: 1}}
+                                                           transition={{duration: 1, delay: 0.2}}><GaugeContainer
                         width={200}
-                        height={200}
+                        height={135}
                         startAngle={-100}
                         endAngle={100}
                         value= {1}
@@ -584,10 +590,12 @@ const HomePage = () => {
                         <GaugeReferenceArc />
                         <GaugeValueArc />
                         <GaugePointer />
-                    </GaugeContainer>}
-                    {total.totalIncome===0 && total.totalExpense!==0 && <GaugeContainer
+                    </GaugeContainer></motion.div>}
+                    {total.totalIncome===0 && total.totalExpense!==0 && <motion.div initial={{x: 0, opacity: 0}}
+                                                                                    animate={{x: 0, opacity: 1}}
+                                                                                    transition={{duration: 1, delay: 0.2}}><GaugeContainer
                         width={200}
-                        height={200}
+                        height={135}
                         startAngle={-100}
                         endAngle={100}
                         value= {100}
@@ -595,10 +603,12 @@ const HomePage = () => {
                         <GaugeReferenceArc />
                         <GaugeValueArc />
                         <GaugePointer />
-                    </GaugeContainer>}
-                    {total.totalExpense>total.totalIncome && total.totalExpense!==0 && total.totalIncome!==0 && <GaugeContainer
+                    </GaugeContainer></motion.div>}
+                    {total.totalExpense>total.totalIncome && total.totalExpense!==0 && total.totalIncome!==0 && <motion.div initial={{x: 0, opacity: 0}}
+                                                                                                                            animate={{x: 0, opacity: 1}}
+                                                                                                                            transition={{duration: 1, delay: 0.2}}><GaugeContainer
                         width={200}
-                        height={200}
+                        height={135}
                         startAngle={-100}
                         endAngle={100}
                         value= {100}
@@ -606,8 +616,10 @@ const HomePage = () => {
                         <GaugeReferenceArc />
                         <GaugeValueArc />
                         <GaugePointer />
-                    </GaugeContainer>}
-                    {total.totalIncome!==0 && <div>{Math.round(total.totalExpense*100/total.totalIncome)}% income spent</div>}
+                    </GaugeContainer></motion.div>}
+                    {total.totalIncome!==0 && <motion.div initial={{x: 0, opacity: 0}}
+                                                          animate={{x: 0, opacity: 1}}
+                                                          transition={{duration: 2, delay: 0.2}}>{Math.round(total.totalExpense*100/total.totalIncome)}% income spent</motion.div>}
 
                 </div>
                 <div className="dataCard ComparisonCard">
@@ -697,7 +709,8 @@ const HomePage = () => {
                                         "lightgreen",
                                         "#FF6384",
 
-                                    ]
+                                    ],
+                                    borderWidth: 0
                                 }]
                             }}
                             options={{
