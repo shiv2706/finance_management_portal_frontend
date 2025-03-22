@@ -138,6 +138,11 @@ const HomePage = () => {
             return null;
         }
 
+        const pointerAnimation = {
+            angle: [0, valueAngle],
+        };
+
+
         const target = {
             x: cx + outerRadius * Math.sin(valueAngle),
             y: cy - outerRadius * Math.cos(valueAngle),
@@ -386,7 +391,7 @@ const HomePage = () => {
                         <Select.Option value="RENT">RENT</Select.Option>
                         <Select.Option value="FOOD">FOOD</Select.Option>
                         <Select.Option value="EDUCATION">EDUCATION</Select.Option>
-                        <Select.Option value="TRANSPORTATION">TRANSPORTATION</Select.Option>
+                        <Select.Option value="TRANSPORT">TRANSPORTATION</Select.Option>
                         <Select.Option value="SHOPPING">SHOPPING</Select.Option>
                         <Select.Option value="ENTERTAINMENT">ENTERTAINMENT</Select.Option>
                         <Select.Option value="GROCERIES">GROCERIES</Select.Option>
